@@ -4,10 +4,16 @@ defmodule QCEC do
   @moduledoc """
   Documentation for QCEC.
   """
-  def list_ads(:bakery), do: list_ads_by_id(1)
-  def list_ads(:sushi),  do: list_ads_by_id(2)
-  def list_ads(:meals),  do: list_ads_by_id(3)
-  def list_ads(:all),    do: list_all_ads()
+  def list_ads(:bakery),    do: list_ads_by_id(1)
+  def list_ads(:sushi),     do: list_ads_by_id(2)
+  def list_ads(:meals),     do: list_ads_by_id(3)
+  def list_ads(:petshop),   do: list_ads_by_id(4)
+  def list_ads(:icecream),  do: list_ads_by_id(5)
+  def list_ads(:grocery),   do: list_ads_by_id(7)
+  def list_ads(:cleaning),  do: list_ads_by_id(8)
+  def list_ads(:fruits),    do: list_ads_by_id(9)
+  def list_ads(:fish_meat), do: list_ads_by_id(10)
+  def list_ads(:all),       do: list_all_ads()
 
   defp list_all_ads do
     Enum.flat_map [:bakery, :sushi, :meals], fn ad_type ->
