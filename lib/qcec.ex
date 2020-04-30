@@ -10,7 +10,7 @@ defmodule QCEC do
   def list_ads(:all),    do: list_all_ads()
 
   defp list_all_ads do
-    Enum.map [:bakery, :sushi, :meals], fn ad_type ->
+    Enum.flat_map [:bakery, :sushi, :meals], fn ad_type ->
       Task.async(fn -> list_ads(ad_type) end) |> Task.await()
     end
   end
