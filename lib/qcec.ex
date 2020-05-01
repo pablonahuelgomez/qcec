@@ -22,9 +22,19 @@ defmodule QCEC do
   end
 
   defp list_ads_by_id(id) do
-    {:ok, {{'HTTP/1.1', 200, 'OK'}, _, body}} = id |> build_url |> :httpc.request
-    {:ok, document} = Floki.parse_document(body)
-    document |> Floki.find(".row") |> Enum.map(&Ad.from_document/1)
+    case id |> build_url |> :httpc.request do
+      {:ok, {{'HTTP/1.1', 200, 'OK'}, _, body}} ->
+        case Floki.parse_document(body) do
+          {:ok, document} ->
+            document
+            |> Floki.find(".row")
+            |> Enum.map(&Ad.from_document/1)
+          {:error, error} ->
+            IO.puts(error)
+        end
+      {:error, error} ->
+        IO.puts(error)
+    end
   end
 
   defp build_url(id) do
