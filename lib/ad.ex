@@ -32,7 +32,8 @@ defmodule QCEC.Ad do
     case String.split(title_and_city, " - ") do
       [city] -> ["", city, responsible]
       [title, city] -> [title, city, responsible]
-      [title, _, city] -> [title, city, responsible]
+      [title, title2, city] -> ["#{title} - #{title2}", city, responsible]
+      [title, title2, title3, city] -> ["#{title} - #{title2} - #{title3}", city, responsible]
     end
   end
 
