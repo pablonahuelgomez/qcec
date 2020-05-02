@@ -1,43 +1,36 @@
-
 defmodule QCEC do
   alias QCEC.Ad
+  require Logger
+
   @moduledoc """
   Documentation for QCEC.
   """
-  def list_ads(:bakery),    do: list_ads_by_id(1)
-  def list_ads(:sushi),     do: list_ads_by_id(2)
-  def list_ads(:meals),     do: list_ads_by_id(3)
-  def list_ads(:petshop),   do: list_ads_by_id(4)
-  def list_ads(:icecream),  do: list_ads_by_id(5)
-  def list_ads(:grocery),   do: list_ads_by_id(7)
-  def list_ads(:cleaning),  do: list_ads_by_id(8)
-  def list_ads(:fruits),    do: list_ads_by_id(9)
-  def list_ads(:fish_meat), do: list_ads_by_id(10)
-  def list_ads(:all),       do: list_all_ads()
-
-  defp list_all_ads do
-    Enum.flat_map [:bakery, :sushi, :meals], fn ad_type ->
-      Task.async(fn -> list_ads(ad_type) end) |> Task.await()
-    end
+  def list_all_ads do
+    Enum.flat_map(1..31, fn ad_category_id ->
+      Task.async(fn -> list_ads_by_id(ad_category_id) end) |> Task.await()
+    end)
   end
 
-  defp list_ads_by_id(id) do
-    case id |> build_url |> :httpc.request do
-      {:ok, {{'HTTP/1.1', 200, 'OK'}, _, body}} ->
-        case Floki.parse_document(body) do
-          {:ok, document} ->
-            document
-            |> Floki.find(".row")
-            |> Enum.map(&Ad.from_document/1)
-          {:error, error} ->
-            IO.puts(error)
-        end
-      {:error, error} ->
-        IO.puts(error)
+  def list_ads_by_id(id) do
+    case id |> build_url |> :httpc.request() do
+      {:ok, {{'HTTP/1.1', 200, 'OK'}, _, body}} -> handle_success(body)
+      {:error, error} -> Logger.info(error)
     end
   end
 
   defp build_url(id) do
     'http://quilmes.gov.ar/servicios/cec.php?id_rubro=#{id}'
+  end
+
+  defp handle_success(body) do
+    case Floki.parse_document(body) do
+      {:ok, document} ->
+        document
+        |> Floki.find(".row")
+        |> Enum.map(&Ad.from_document/1)
+
+      {:error, error} ->
+        Logger.info(error)
+    end
   end
 end
