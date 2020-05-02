@@ -30,6 +30,7 @@ defmodule QCEC do
     case id |> build_url |> :httpc.request() do
       {:ok, {{'HTTP/1.1', 200, 'OK'}, _, body}} ->
         handle_success(body, handler)
+
       {:error, error} ->
         Logger.info(error)
     end
@@ -43,6 +44,7 @@ defmodule QCEC do
     case Floki.parse_document(body) do
       {:ok, document} ->
         handler.(document)
+
       {:error, error} ->
         Logger.info(error)
     end
