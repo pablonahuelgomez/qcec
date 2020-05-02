@@ -3,37 +3,51 @@ defmodule QCEC.Ad do
 
   def from_document(document) do
     image_url = image_url(document)
-    whatsapp  = whatsapp(document)
+    whatsapp = whatsapp(document)
     [title, city, responsible] = title_city_responsible(document)
 
-    %QCEC.Ad{image_url: image_url, whatsapp: whatsapp, title: title, responsible: responsible, city: city}
+    %QCEC.Ad{
+      image_url: image_url,
+      whatsapp: whatsapp,
+      title: title,
+      responsible: responsible,
+      city: city
+    }
   end
 
   defp image_url(document) do
     document
     |> Floki.find(".col-sm-2 img")
     |> Floki.attribute("src")
-    |> Floki.text
+    |> Floki.text()
   end
 
   defp whatsapp(document) do
     document
     |> Floki.find(whatsapp_selector())
-    |> Floki.text
+    |> Floki.text()
   end
 
   defp title_city_responsible(document) do
-    [title_and_city | [responsible | _]] = document
-    |> Floki.find(text_selector())
-    |> Floki.text
-    |> String.split("\n")
-    |> Enum.map(&String.trim/1)
+    [title_and_city | [responsible | _]] =
+      document
+      |> Floki.find(text_selector())
+      |> Floki.text()
+      |> String.split("\n")
+      |> Enum.map(&String.trim/1)
 
     case String.split(title_and_city, " - ") do
-      [city] -> ["", city, responsible]
-      [title, city] -> [title, city, responsible]
-      [title, title2, city] -> ["#{title} - #{title2}", city, responsible]
-      [title, title2, title3, city] -> ["#{title} - #{title2} - #{title3}", city, responsible]
+      [city] ->
+        ["", city, responsible]
+
+      [title, city] ->
+        [title, city, responsible]
+
+      [title, title2, city] ->
+        ["#{title} - #{title2}", city, responsible]
+
+      [title, title2, title3, city] ->
+        ["#{title} - #{title2} - #{title3}", city, responsible]
     end
   end
 
