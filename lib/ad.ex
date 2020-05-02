@@ -2,13 +2,11 @@ defmodule QCEC.Ad do
   defstruct image_url: nil, whatsapp: nil, title: nil, responsible: nil, city: nil
 
   def from_document(document) do
-    image_url = image_url(document)
-    whatsapp = whatsapp(document)
     [title, city, responsible] = title_city_responsible(document)
 
     %QCEC.Ad{
-      image_url: image_url,
-      whatsapp: whatsapp,
+      image_url: image_url(document),
+      whatsapp: whatsapp(document),
       title: title,
       responsible: responsible,
       city: city
