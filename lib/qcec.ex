@@ -1,5 +1,6 @@
 defmodule QCEC do
   alias QCEC.Ad
+  alias QCEC.Category
   require Logger
 
   @moduledoc """
@@ -12,9 +13,19 @@ defmodule QCEC do
   end
 
   def list_ads_by_id(id) do
+    fetch_with_handler(id, &extract_ad/1)
+  end
+
+  def category_by_id(id) do
+    fetch_with_handler(id, &extract_category/1)
+  end
+
+  defp fetch_with_handler(id, handler) do
     case id |> build_url |> :httpc.request() do
-      {:ok, {{'HTTP/1.1', 200, 'OK'}, _, body}} -> handle_success(body)
-      {:error, error} -> Logger.info(error)
+      {:ok, {{'HTTP/1.1', 200, 'OK'}, _, body}} ->
+        handle_success(body, handler)
+      {:error, error} ->
+        Logger.info(error)
     end
   end
 
@@ -22,15 +33,24 @@ defmodule QCEC do
     'http://quilmes.gov.ar/servicios/cec.php?id_rubro=#{id}'
   end
 
-  defp handle_success(body) do
+  defp handle_success(body, handler) do
     case Floki.parse_document(body) do
       {:ok, document} ->
-        document
-        |> Floki.find(".row")
-        |> Enum.map(&Ad.from_document/1)
-
+        handler.(document)
       {:error, error} ->
         Logger.info(error)
     end
+  end
+
+  defp extract_category(document) do
+    document
+    |> Floki.find("table[style=\"background-color: #783884\"")
+    |> Category.from_document()
+  end
+
+  defp extract_ad(document) do
+    document
+    |> Floki.find(".row")
+    |> Enum.map(&Ad.from_document/1)
   end
 end
