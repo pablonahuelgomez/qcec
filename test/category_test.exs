@@ -1,7 +1,7 @@
 alias QCEC.Category
 
 defmodule QCECTest.Category do
-  use ExUnit.Case
+  use ExUnit.Case, async: true
 
   test "from_document parses the category" do
     {:ok, file} = File.read('test/category.html')

@@ -1,12 +1,17 @@
 alias QCEC.Ad
 
 defmodule QCECTest.Ad do
-  use ExUnit.Case
+  use ExUnit.Case, async: true
 
-  test "from_document parses the ad 1 structure" do
-    {:ok, file} = File.read('test/ad1.html')
+  setup %{filename: filename} do
+    {:ok, file} = File.read('test/#{filename}')
     {:ok, document} = Floki.parse_document(file)
 
+    %{document: document}
+  end
+
+  @tag filename: 'ad1.html'
+  test "from_document parses the ad 1 structure", %{document: document} do
     assert Ad.from_document(document) ==
              %Ad{
                image_url: "http://intranet.quilmes.gov.ar/cec/logos_comercios/cafesur.png",
@@ -17,10 +22,8 @@ defmodule QCECTest.Ad do
              }
   end
 
-  test "from_document parses the ad 2 structure" do
-    {:ok, file} = File.read('test/ad2.html')
-    {:ok, document} = Floki.parse_document(file)
-
+  @tag filename: 'ad2.html'
+  test "from_document parses the ad 2 structure", %{document: document} do
     assert Ad.from_document(document) ==
              %Ad{
                image_url:
@@ -32,10 +35,8 @@ defmodule QCECTest.Ad do
              }
   end
 
-  test "from_document parses the ad 3 structure" do
-    {:ok, file} = File.read('test/ad3.html')
-    {:ok, document} = Floki.parse_document(file)
-
+  @tag filename: 'ad3.html'
+  test "from_document parses the ad 3 structure", %{document: document} do
     assert Ad.from_document(document) ==
              %Ad{
                image_url:
