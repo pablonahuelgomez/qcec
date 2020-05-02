@@ -1,5 +1,5 @@
 defmodule QCEC.Category do
-  defstruct name: nil, description: nil, external_id: nil, image_url: nil
+  defstruct name: nil, image_url: nil
 
   def from_document(document) do
     %QCEC.Category{
@@ -16,10 +16,11 @@ defmodule QCEC.Category do
   end
 
   defp image_url(document) do
-    path = document
-    |> Floki.find("img")
-    |> Floki.attribute("src")
-    |> Floki.text()
+    path =
+      document
+      |> Floki.find("img")
+      |> Floki.attribute("src")
+      |> Floki.text()
 
     "https://quilmes.gov.ar/servicios/#{path}"
   end
