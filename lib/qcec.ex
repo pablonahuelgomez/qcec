@@ -12,6 +12,12 @@ defmodule QCEC do
     end)
   end
 
+  def list_all_categories do
+    Enum.map(1..31, fn category_id ->
+      Task.async(fn -> category_by_id(category_id) end) |> Task.await()
+    end)
+  end
+
   def list_ads_by_id(id) do
     fetch_with_handler(id, &extract_ad/1)
   end
