@@ -7,15 +7,20 @@ defmodule QCEC do
   Documentation for QCEC.
   """
   def list_all_ads do
-    Enum.flat_map(1..31, fn ad_category_id ->
-      Task.async(fn -> list_ads_by_id(ad_category_id) end) |> Task.await()
+    1..31
+    |> Enum.map(fn ad_category_id ->
+      Task.async(fn -> list_ads_by_id(ad_category_id) end)
     end)
+    |> Enum.map(fn task -> Task.await(task, :infinity) end)
+    |> Enum.flat_map(fn ad -> ad end)
   end
 
   def list_all_categories do
-    Enum.map(1..31, fn category_id ->
-      Task.async(fn -> category_by_id(category_id) end) |> Task.await()
+    1..31
+    |> Enum.map(fn category_id ->
+      Task.async(fn -> category_by_id(category_id) end)
     end)
+    |> Enum.map(fn task -> Task.await(task, :infinity) end)
   end
 
   def list_ads_by_id(id) do
