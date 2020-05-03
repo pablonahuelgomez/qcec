@@ -2,8 +2,8 @@ defmodule QCEC.Server do
   use GenServer
 
   # Client
-  def start_link(_opts) do
-    GenServer.start_link(__MODULE__, :ok, name: __MODULE__)
+  def start_link(opts) do
+    GenServer.start_link(__MODULE__, :ok, opts)
   end
 
   def stop(server \\ __MODULE__) do
