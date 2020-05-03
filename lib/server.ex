@@ -6,25 +6,17 @@ defmodule QCEC.Server do
     GenServer.start_link(__MODULE__, :ok, name: __MODULE__)
   end
 
-  def stop do
-    GenServer.stop(__MODULE__)
+  def stop(server \\ __MODULE__) do
+    GenServer.stop(server)
   end
 
-  def get(:ads) do
-    GenServer.call(__MODULE__, {:get, :ads})
-  end
+  def get(action, server \\ __MODULE__)
+  def get(:ads, server), do: GenServer.call(server, {:get, :ads})
+  def get(:categories, server), do: GenServer.call(server, {:get, :categories})
 
-  def get(:categories) do
-    GenServer.call(__MODULE__, {:get, :categories})
-  end
-
-  def refresh(:ads) do
-    GenServer.cast(__MODULE__, {:refresh, :ads})
-  end
-
-  def refresh(:categories) do
-    GenServer.cast(__MODULE__, {:refresh, :categories})
-  end
+  def refresh(action, server \\ __MODULE__)
+  def refresh(:ads, server), do: GenServer.cast(server, {:refresh, :ads})
+  def refresh(:categories, server), do: GenServer.cast(server, {:refresh, :categories})
 
   # Server
   @impl true
