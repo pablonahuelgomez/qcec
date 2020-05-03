@@ -44,7 +44,7 @@ defmodule QCECTest.Ad do
                whatsapp: "1166363702",
                title: "",
                responsible: "GABRIELA SUSANA RIVEROS ESPARZA (responsable)",
-               city: "- Bernal Oeste"
+               city: "Bernal Oeste"
              }
   end
 end

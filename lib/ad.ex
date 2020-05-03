@@ -36,16 +36,16 @@ defmodule QCEC.Ad do
 
     case String.split(title_and_city, " - ") do
       [city] ->
-        ["", city, responsible]
+        ["", format_city(city), responsible]
 
       [title, city] ->
-        [title, city, responsible]
+        [title, format_city(city), responsible]
 
       [title, title2, city] ->
-        ["#{title} - #{title2}", city, responsible]
+        ["#{title} - #{title2}", format_city(city), responsible]
 
       [title, title2, title3, city] ->
-        ["#{title} - #{title2} - #{title3}", city, responsible]
+        ["#{title} - #{title2} - #{title3}", format_city(city), responsible]
     end
   end
 
@@ -55,5 +55,9 @@ defmodule QCEC.Ad do
 
   defp text_selector do
     ".col-sm-6 strong"
+  end
+
+  defp format_city(city) do
+    city |> String.replace(~r/- /, "")
   end
 end
