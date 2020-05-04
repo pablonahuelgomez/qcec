@@ -16,12 +16,14 @@ defmodule QCEC.Category do
   end
 
   defp image_url(document) do
-    path =
-      document
-      |> Floki.find("img")
-      |> Floki.attribute("src")
-      |> Floki.text()
+    document
+    |> Floki.find("img")
+    |> Floki.attribute("src")
+    |> Floki.text()
+    |> build_url()
+  end
 
+  defp build_url(path) do
     "https://quilmes.gov.ar/servicios/#{path}"
   end
 end
