@@ -1,6 +1,7 @@
-# QCEC
+![Elixir CI](https://github.com/pablonahuelgomez/qcec/workflows/Elixir%20CI/badge.svg?branch=master)
 
-**TODO: Add description**
+# QCEC
+QCEC is an OTP Application which scrapes different web pages concurrently retrieving awesome results.
 
 ## Installation
 
