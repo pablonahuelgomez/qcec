@@ -18,10 +18,14 @@ defmodule QCEC.Server do
   def refresh(:ads, server), do: GenServer.cast(server, {:refresh, :ads})
   def refresh(:categories, server), do: GenServer.cast(server, {:refresh, :categories})
 
+  def fetch_html(server \\ __MODULE__) do
+    GenServer.cast(server, {:fetch_html})
+  end
+
   # Server
   @impl true
   def init(:ok) do
-    {:ok, %{ads: [], categories: []}}
+    {:ok, %{ads: [], categories: [], documents: []}}
   end
 
   @impl true
@@ -33,8 +37,9 @@ defmodule QCEC.Server do
   def handle_cast({:refresh, :ads}, state) do
     {:noreply,
      %{
-       ads: QCEC.list_all_ads(),
-       categories: state.categories
+       ads: QCEC.Parser.parse_ads(state.documents),
+       categories: state.categories,
+       documents: state.documents
      }}
   end
 
@@ -43,7 +48,17 @@ defmodule QCEC.Server do
     {:noreply,
      %{
        ads: state.ads,
-       categories: QCEC.list_all_categories()
+       categories: QCEC.Parser.parse_categories(state.documents),
+       documents: state.documents
+     }}
+  end
+
+  def handle_cast({:fetch_html}, state) do
+    {:noreply,
+     %{
+       ads: state.ads,
+       categories: state.categories,
+       documents: QCEC.Scraper.fetch_html_pages()
      }}
   end
 end
