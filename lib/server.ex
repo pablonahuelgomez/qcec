@@ -14,9 +14,9 @@ defmodule QCEC.Server do
   def get(:ads, server), do: GenServer.call(server, {:get, :ads})
   def get(:categories, server), do: GenServer.call(server, {:get, :categories})
 
-  def refresh(action, server \\ __MODULE__)
-  def refresh(:ads, server), do: GenServer.cast(server, {:refresh, :ads})
-  def refresh(:categories, server), do: GenServer.cast(server, {:refresh, :categories})
+  def parse(action, server \\ __MODULE__)
+  def parse(:ads, server), do: GenServer.cast(server, {:parse, :ads})
+  def parse(:categories, server), do: GenServer.cast(server, {:parse, :categories})
 
   def fetch_html(server \\ __MODULE__) do
     GenServer.cast(server, {:fetch_html})
@@ -34,7 +34,7 @@ defmodule QCEC.Server do
   def handle_call({:get, :categories}, _from, state), do: {:reply, state.categories, state}
 
   @impl true
-  def handle_cast({:refresh, :ads}, state) do
+  def handle_cast({:parse, :ads}, state) do
     {:noreply,
      %{
        ads: QCEC.Parser.parse_ads(state.documents),
@@ -44,7 +44,7 @@ defmodule QCEC.Server do
   end
 
   @impl true
-  def handle_cast({:refresh, :categories}, state) do
+  def handle_cast({:parse, :categories}, state) do
     {:noreply,
      %{
        ads: state.ads,
