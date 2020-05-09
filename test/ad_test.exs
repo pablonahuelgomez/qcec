@@ -18,7 +18,12 @@ defmodule QCECTest.Ad do
                whatsapp: "1135809005",
                title: "CAFE SUR",
                responsible: "AGUSTIN LAJCHER (responsable)",
-               city: "Bernal"
+               city: "Bernal",
+               links: [
+                 "https://maps.google.com/?q=-34.7108688,-58.2800827",
+                 "https://www.facebook.com/cafesurBernal1998/",
+                 "https://api.whatsapp.com/send?phone=+5491135809005&text=Consulta desde Comprar en Casa - Municipio de Quilmes"
+               ]
              }
   end
 
@@ -31,7 +36,14 @@ defmodule QCECTest.Ad do
                whatsapp: "1168037404",
                title: "ARRIBA Y ABAJO - CAFE BAR",
                responsible: "SOLANGE CACERES (responsable)",
-               city: "Quilmes Centro"
+               city: "Quilmes Centro",
+               links: [
+                 "https://maps.google.com/?q=-34.72073748428291,-58.25452744960784",
+                 "https://www.pedidosya.com.ar/restaurantes/quilmes/arriba-y-abajo-menu",
+                 "https://www.facebook.com/AyACAF%C3%89BAR-2393848580633952/?ref=bookmarks",
+                 "https://www.instagram.com/arriba_abajocafebar/",
+                 "https://api.whatsapp.com/send?phone=+5491168037404&text=Consulta desde Comprar en Casa - Municipio de Quilmes"
+               ]
              }
   end
 
@@ -44,7 +56,30 @@ defmodule QCECTest.Ad do
                whatsapp: "1166363702",
                title: "",
                responsible: "GABRIELA SUSANA RIVEROS ESPARZA (responsable)",
-               city: "Bernal Oeste"
+               city: "Bernal Oeste",
+               links: [
+                 "https://maps.google.com/?q=-34.7238655,-58.3144188",
+                 "https://api.whatsapp.com/send?phone=+5491166363702&text=Consulta desde Comprar en Casa - Municipio de Quilmes"
+               ]
+             }
+  end
+
+  @tag filename: 'ad4.html'
+  test "from_document parses the ad 4 structure", %{document: document} do
+    assert Ad.from_document(document) ==
+             %Ad{
+               image_url:
+                 "http://intranet.quilmes.gov.ar/cec/logos_comercios/35665677_20200417180527.png",
+               whatsapp: "1135665677",
+               title: "ORENSE ALFAJORES",
+               responsible: "ALEJANDRO ESTEVEZ (responsable)",
+               city: "Bernal",
+               links: [
+                 "https://maps.google.com/?q=-34.713575,-58.288414",
+                 "https://www.alfajoresorense.com.ar/",
+                 "https://www.instagram.com/orense.alfajores/",
+                 "https://api.whatsapp.com/send?phone=+5491135665677&text=Consulta desde Comprar en Casa - Municipio de Quilmes"
+               ]
              }
   end
 end

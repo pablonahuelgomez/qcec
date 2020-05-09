@@ -1,5 +1,5 @@
 defmodule QCEC.Ad do
-  defstruct image_url: nil, whatsapp: nil, title: nil, responsible: nil, city: nil
+  defstruct image_url: nil, whatsapp: nil, title: nil, responsible: nil, city: nil, links: nil
 
   def from_document(document) do
     [title, city, responsible] = title_city_responsible(document)
@@ -9,8 +9,15 @@ defmodule QCEC.Ad do
       whatsapp: whatsapp(document),
       title: title,
       responsible: responsible,
-      city: city
+      city: city,
+      links: links(document)
     }
+  end
+
+  defp links(document) do
+    document
+    |> Floki.find(".col-sm-6 a")
+    |> Floki.attribute("href")
   end
 
   defp image_url(document) do
