@@ -41,7 +41,7 @@ defmodule QCEC.Ad do
       |> String.split("\n")
       |> Enum.map(&String.trim/1)
 
-    case String.split(title_and_city, " - ") do
+    result = case String.split(title_and_city, " - ") do
       [city] ->
         ["", format_city(city), responsible]
 
@@ -54,6 +54,8 @@ defmodule QCEC.Ad do
       [title, title2, title3, city] ->
         ["#{title} - #{title2} - #{title3}", format_city(city), responsible]
     end
+
+    result |> Enum.map(&capitalize/1)
   end
 
   defp whatsapp_selector do
@@ -66,5 +68,12 @@ defmodule QCEC.Ad do
 
   defp format_city(city) do
     city |> String.replace(~r/- /, "")
+  end
+
+  defp capitalize(text) do
+    text
+    |> String.split()
+    |> Enum.map(&String.capitalize/1)
+    |> Enum.join(" ")
   end
 end

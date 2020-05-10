@@ -16,8 +16,8 @@ defmodule QCECTest.Ad do
              %Ad{
                image_url: "http://intranet.quilmes.gov.ar/cec/logos_comercios/cafesur.png",
                whatsapp: "1135809005",
-               title: "CAFE SUR",
-               responsible: "AGUSTIN LAJCHER (responsable)",
+               title: "Cafe Sur",
+               responsible: "Agustin Lajcher (responsable)",
                city: "Bernal",
                links: [
                  "https://maps.google.com/?q=-34.7108688,-58.2800827",
@@ -34,8 +34,8 @@ defmodule QCECTest.Ad do
                image_url:
                  "http://intranet.quilmes.gov.ar/cec/logos_comercios/68037404_20200426153234.png",
                whatsapp: "1168037404",
-               title: "ARRIBA Y ABAJO - CAFE BAR",
-               responsible: "SOLANGE CACERES (responsable)",
+               title: "Arriba Y Abajo - Cafe Bar",
+               responsible: "Solange Caceres (responsable)",
                city: "Quilmes Centro",
                links: [
                  "https://maps.google.com/?q=-34.72073748428291,-58.25452744960784",
@@ -55,7 +55,7 @@ defmodule QCECTest.Ad do
                  "http://intranet.quilmes.gov.ar/cec/logos_comercios/1166363702_20200422113800.png",
                whatsapp: "1166363702",
                title: "",
-               responsible: "GABRIELA SUSANA RIVEROS ESPARZA (responsable)",
+               responsible: "Gabriela Susana Riveros Esparza (responsable)",
                city: "Bernal Oeste",
                links: [
                  "https://maps.google.com/?q=-34.7238655,-58.3144188",
@@ -71,8 +71,8 @@ defmodule QCECTest.Ad do
                image_url:
                  "http://intranet.quilmes.gov.ar/cec/logos_comercios/35665677_20200417180527.png",
                whatsapp: "1135665677",
-               title: "ORENSE ALFAJORES",
-               responsible: "ALEJANDRO ESTEVEZ (responsable)",
+               title: "Orense Alfajores",
+               responsible: "Alejandro Estevez (responsable)",
                city: "Bernal",
                links: [
                  "https://maps.google.com/?q=-34.713575,-58.288414",
