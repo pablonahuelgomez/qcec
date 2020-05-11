@@ -7,19 +7,19 @@ defmodule QCEC.Category do
   @doc "Parses a list of html_tree concurrently into a list of QCEC.Category"
   def from_document(document) do
     %QCEC.Category{
-      name: name(document),
-      image_url: image_url(document)
+      name: parse(document, :name),
+      image_url: parse(document, :image_url)
     }
   end
 
-  defp name(document) do
+  defp parse(document, :name) do
     document
     |> Floki.find("h1[style=\"color:#ffffff\"]")
     |> Floki.text()
     |> String.trim()
   end
 
-  defp image_url(document) do
+  defp parse(document, :image_url) do
     document
     |> Floki.find("img")
     |> Floki.attribute("src")

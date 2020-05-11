@@ -6,61 +6,61 @@ defmodule QCEC.Ad do
 
   @doc "Transform a html_tree into an ad."
   def from_document(document) do
-    [title, city, responsible] = title_city_responsible(document)
+    [title, city, responsible] = parse(document, :title_city_responsible)
 
     %QCEC.Ad{
-      image_url: image_url(document),
-      whatsapp: whatsapp(document),
+      image_url: parse(document, :image_url),
+      whatsapp: parse(document, :whatsapp),
       title: title,
       responsible: responsible,
       city: city,
-      links: links(document)
+      links: parse(document, :links)
     }
   end
 
-  defp links(document) do
+  defp parse(document, :links) do
     document
     |> Floki.find(".col-sm-6 a")
     |> Floki.attribute("href")
   end
 
-  defp image_url(document) do
+  defp parse(document, :image_url) do
     document
     |> Floki.find(".col-sm-2 img")
     |> Floki.attribute("src")
     |> Floki.text()
   end
 
-  defp whatsapp(document) do
+  defp parse(document, :whatsapp) do
     document
     |> Floki.find(whatsapp_selector())
     |> Floki.text()
   end
 
-  defp title_city_responsible(document) do
-    [title_and_city | [responsible | _]] =
-      document
-      |> Floki.find(text_selector())
-      |> Floki.text()
-      |> String.split("\n")
-      |> Enum.map(&String.trim/1)
+  defp parse(document, :title_city_responsible) do
+    document
+    |> Floki.find(text_selector())
+    |> Floki.text()
+    |> String.split("\n")
+    |> Enum.map(&String.trim/1)
+    |> extract_values
+    |> Enum.map(&capitalize/1)
+  end
 
-    result =
-      case String.split(title_and_city, " - ") do
-        [city] ->
-          ["", format_city(city), responsible]
+  defp extract_values([title_and_city | [responsible | _]]) do
+    case String.split(title_and_city, " - ") do
+      [city] ->
+        ["", format_city(city), responsible]
 
-        [title, city] ->
-          [title, format_city(city), responsible]
+      [title, city] ->
+        [title, format_city(city), responsible]
 
-        [title, title2, city] ->
-          ["#{title} - #{title2}", format_city(city), responsible]
+      [title, title2, city] ->
+        ["#{title} - #{title2}", format_city(city), responsible]
 
-        [title, title2, title3, city] ->
-          ["#{title} - #{title2} - #{title3}", format_city(city), responsible]
-      end
-
-    result |> Enum.map(&capitalize/1)
+      [title, title2, title3, city] ->
+        ["#{title} - #{title2} - #{title3}", format_city(city), responsible]
+    end
   end
 
   defp whatsapp_selector do
