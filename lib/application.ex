@@ -1,4 +1,7 @@
 defmodule QCEC.Application do
+  @moduledoc """
+  Simple Application
+  """
   use Application
 
   @impl true

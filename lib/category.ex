@@ -1,6 +1,10 @@
 defmodule QCEC.Category do
+  @moduledoc """
+  Category is a simple QCEC advertise structure.
+  """
   defstruct name: nil, image_url: nil
 
+  @doc "Parses a list of html_tree concurrently into a list of QCEC.Category"
   def from_document(document) do
     %QCEC.Category{
       name: name(document),

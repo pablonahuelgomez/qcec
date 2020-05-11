@@ -1,4 +1,6 @@
 defmodule QCEC.Scraper do
+  @moduledoc false
+
   def fetch_html_pages(range \\ 1..31) do
     range
     |> Enum.map(fn id -> Task.async(fn -> fetch_html_page(id) end) end)

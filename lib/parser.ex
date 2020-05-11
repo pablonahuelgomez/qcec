@@ -1,28 +1,34 @@
 defmodule QCEC.Parser do
+  @moduledoc """
+  Parses html_tree into QCEC structures.
+  """
+
   alias QCEC.Ad
   alias QCEC.Category
 
+  @doc "Parses a list of html_tree concurrently into a list of QCEC.Ad"
   def parse_ads(htmls) do
     htmls
-    |> Enum.map(fn html -> Task.async(fn -> get_ads(html) end) end)
+    |> Enum.map(fn html -> Task.async(fn -> parse(:ads, html) end) end)
     |> Enum.flat_map(fn task -> Task.await(task, :infinity) end)
   end
 
+  @doc "Parses a list of html_tree concurrently into a list of QCEC.Ad"
   def parse_categories(htmls) do
     htmls
-    |> Enum.map(fn html -> Task.async(fn -> get_category(html) end) end)
+    |> Enum.map(fn html -> Task.async(fn -> parse(:category, html) end) end)
     |> Enum.map(fn task -> Task.await(task, :infinity) end)
   end
 
-  defp get_category(html) do
+  defp parse(:category, html) do
     case Floki.parse_document(html) do
       {:ok, document} -> extract_category(document)
       {:error, error} -> {:error, error}
     end
   end
 
-  defp get_ads(html) do
-    case Floki.parse_document(html) do
+  defp parse(:ads, htmls) do
+    case Floki.parse_document(htmls) do
       {:ok, document} -> extract_ads(document)
       {:error, error} -> {:error, error}
     end

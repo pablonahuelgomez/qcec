@@ -1,4 +1,7 @@
 defmodule QCEC.Server do
+  @moduledoc """
+  QCEC.Server interacts with the given data provider.
+  """
   use GenServer
 
   # Client

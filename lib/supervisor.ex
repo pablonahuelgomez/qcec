@@ -1,4 +1,7 @@
 defmodule QCEC.Supervisor do
+  @moduledoc """
+  Simple Supervisor
+  """
   use Supervisor
 
   def start_link(opts) do

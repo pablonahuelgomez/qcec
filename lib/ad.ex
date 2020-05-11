@@ -1,6 +1,10 @@
 defmodule QCEC.Ad do
+  @moduledoc """
+  Ad is a simple QCEC advertise structure.
+  """
   defstruct image_url: nil, whatsapp: nil, title: nil, responsible: nil, city: nil, links: nil
 
+  @doc "Transform a html_tree into an ad."
   def from_document(document) do
     [title, city, responsible] = title_city_responsible(document)
 
@@ -41,19 +45,20 @@ defmodule QCEC.Ad do
       |> String.split("\n")
       |> Enum.map(&String.trim/1)
 
-    result = case String.split(title_and_city, " - ") do
-      [city] ->
-        ["", format_city(city), responsible]
+    result =
+      case String.split(title_and_city, " - ") do
+        [city] ->
+          ["", format_city(city), responsible]
 
-      [title, city] ->
-        [title, format_city(city), responsible]
+        [title, city] ->
+          [title, format_city(city), responsible]
 
-      [title, title2, city] ->
-        ["#{title} - #{title2}", format_city(city), responsible]
+        [title, title2, city] ->
+          ["#{title} - #{title2}", format_city(city), responsible]
 
-      [title, title2, title3, city] ->
-        ["#{title} - #{title2} - #{title3}", format_city(city), responsible]
-    end
+        [title, title2, title3, city] ->
+          ["#{title} - #{title2} - #{title3}", format_city(city), responsible]
+      end
 
     result |> Enum.map(&capitalize/1)
   end
