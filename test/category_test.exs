@@ -7,10 +7,11 @@ defmodule QCECTest.Category do
     {:ok, file} = File.read('test/category.html')
     {:ok, document} = Floki.parse_document(file)
 
-    assert Category.from_document(document) ==
+    assert Category.from_document(document, :category) ==
              %Category{
                name: "Ópticas",
-               image_url: "https://quilmes.gov.ar/servicios/rubros/opticas.png"
+               image_url: "https://quilmes.gov.ar/servicios/rubros/opticas.png",
+               local_name: :category
              }
   end
 
@@ -18,10 +19,11 @@ defmodule QCECTest.Category do
     {:ok, file} = File.read('test/category2.html')
     {:ok, document} = Floki.parse_document(file)
 
-    assert Category.from_document(document) ==
+    assert Category.from_document(document, :category) ==
              %Category{
                name: "Panadería",
-               image_url: "https://quilmes.gov.ar/servicios/rubros/panaderia.png"
+               image_url: "https://quilmes.gov.ar/servicios/rubros/panaderia.png",
+               local_name: :category
              }
   end
 end

@@ -12,7 +12,7 @@ defmodule QCECTest.Ad do
 
   @tag filename: 'ad1.html'
   test "from_document parses the ad 1 structure", %{document: document} do
-    assert Ad.from_document(document) ==
+    assert Ad.from_document(document, :category) ==
              %Ad{
                image_url: "http://intranet.quilmes.gov.ar/cec/logos_comercios/cafesur.png",
                whatsapp: "1135809005",
@@ -23,13 +23,14 @@ defmodule QCECTest.Ad do
                  "https://maps.google.com/?q=-34.7108688,-58.2800827",
                  "https://www.facebook.com/cafesurBernal1998/",
                  "https://api.whatsapp.com/send?phone=+5491135809005&text=Consulta desde Comprar en Casa - Municipio de Quilmes"
-               ]
+               ],
+               category_name: :category
              }
   end
 
   @tag filename: 'ad2.html'
   test "from_document parses the ad 2 structure", %{document: document} do
-    assert Ad.from_document(document) ==
+    assert Ad.from_document(document, :category) ==
              %Ad{
                image_url:
                  "http://intranet.quilmes.gov.ar/cec/logos_comercios/68037404_20200426153234.png",
@@ -43,13 +44,14 @@ defmodule QCECTest.Ad do
                  "https://www.facebook.com/AyACAF%C3%89BAR-2393848580633952/?ref=bookmarks",
                  "https://www.instagram.com/arriba_abajocafebar/",
                  "https://api.whatsapp.com/send?phone=+5491168037404&text=Consulta desde Comprar en Casa - Municipio de Quilmes"
-               ]
+               ],
+               category_name: :category
              }
   end
 
   @tag filename: 'ad3.html'
   test "from_document parses the ad 3 structure", %{document: document} do
-    assert Ad.from_document(document) ==
+    assert Ad.from_document(document, :category) ==
              %Ad{
                image_url:
                  "http://intranet.quilmes.gov.ar/cec/logos_comercios/1166363702_20200422113800.png",
@@ -60,13 +62,14 @@ defmodule QCECTest.Ad do
                links: [
                  "https://maps.google.com/?q=-34.7238655,-58.3144188",
                  "https://api.whatsapp.com/send?phone=+5491166363702&text=Consulta desde Comprar en Casa - Municipio de Quilmes"
-               ]
+               ],
+               category_name: :category
              }
   end
 
   @tag filename: 'ad4.html'
   test "from_document parses the ad 4 structure", %{document: document} do
-    assert Ad.from_document(document) ==
+    assert Ad.from_document(document, :category) ==
              %Ad{
                image_url:
                  "http://intranet.quilmes.gov.ar/cec/logos_comercios/35665677_20200417180527.png",
@@ -79,7 +82,8 @@ defmodule QCECTest.Ad do
                  "https://www.alfajoresorense.com.ar/",
                  "https://www.instagram.com/orense.alfajores/",
                  "https://api.whatsapp.com/send?phone=+5491135665677&text=Consulta desde Comprar en Casa - Municipio de Quilmes"
-               ]
+               ],
+               category_name: :category
              }
   end
 end
