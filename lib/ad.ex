@@ -58,7 +58,7 @@ defmodule QCEC.Ad do
 
   defp parse(document, :delivery) do
     document
-    |> Floki.find("strong .col-sm-4 strong")
+    |> Floki.find(".col-sm-4 strong")
     |> Enum.filter(fn {"strong", [], text} -> to_string(text) |> String.match?(~r/repartidor/) end)
     |> Enum.map(fn {"strong", [], text} -> to_string(text) |> capitalize() end)
   end
