@@ -3,7 +3,9 @@ defmodule QCEC.Scraper do
 
   def fetch_html_pages do
     QCEC.Categories.list()
-    |> Enum.map(fn {category_name, id} -> Task.async(fn -> fetch_html_page(category_name, id) end) end)
+    |> Enum.map(fn {category_name, id} ->
+      Task.async(fn -> fetch_html_page(category_name, id) end)
+    end)
     |> Enum.map(fn task -> Task.await(task, :infinity) end)
   end
 

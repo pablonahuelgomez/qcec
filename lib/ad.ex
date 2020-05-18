@@ -2,7 +2,13 @@ defmodule QCEC.Ad do
   @moduledoc """
   Ad is a simple QCEC advertise structure.
   """
-  defstruct image_url: nil, whatsapp: nil, title: nil, responsible: nil, city: nil, links: nil, category_name: nil
+  defstruct image_url: nil,
+            whatsapp: nil,
+            title: nil,
+            responsible: nil,
+            city: nil,
+            links: nil,
+            category_name: nil
 
   @doc "Transform a html_tree into an ad."
   def from_document(document, category_name) do

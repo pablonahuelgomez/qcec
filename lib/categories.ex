@@ -1,5 +1,4 @@
 defmodule QCEC.Categories do
-
   @categories [
     {:bakery, 1},
     {:sushi, 2},
@@ -28,7 +27,7 @@ defmodule QCEC.Categories do
     {:pasta, 28},
     {:without_tacc, 29},
     {:bazaar_and_decoration, 30},
-    {:optics, 31},
+    {:optics, 31}
   ]
 
   def list, do: @categories

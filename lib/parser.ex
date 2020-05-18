@@ -9,14 +9,18 @@ defmodule QCEC.Parser do
   @doc "Parses a list of html_tree concurrently into a list of QCEC.Ad"
   def parse_ads(htmls) do
     htmls
-    |> Enum.map(fn {category_name, html} -> Task.async(fn -> parse(:ads, html, category_name) end) end)
+    |> Enum.map(fn {category_name, html} ->
+      Task.async(fn -> parse(:ads, html, category_name) end)
+    end)
     |> Enum.flat_map(fn task -> Task.await(task, :infinity) end)
   end
 
   @doc "Parses a list of html_tree concurrently into a list of QCEC.Ad"
   def parse_categories(htmls) do
     htmls
-    |> Enum.map(fn {category_name, html} -> Task.async(fn -> parse(:category, html, category_name) end) end)
+    |> Enum.map(fn {category_name, html} ->
+      Task.async(fn -> parse(:category, html, category_name) end)
+    end)
     |> Enum.map(fn task -> Task.await(task, :infinity) end)
   end
 
