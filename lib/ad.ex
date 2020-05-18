@@ -8,7 +8,8 @@ defmodule QCEC.Ad do
             responsible: nil,
             city: nil,
             links: nil,
-            category_name: nil
+            category_name: nil,
+            delivery: nil
 
   @doc "Transform a html_tree into an ad."
   def from_document(document, category_name) do
@@ -21,7 +22,8 @@ defmodule QCEC.Ad do
       responsible: responsible,
       city: city,
       links: parse(document, :links),
-      category_name: category_name
+      category_name: category_name,
+      delivery: parse(document, :delivery)
     }
   end
 
@@ -52,6 +54,13 @@ defmodule QCEC.Ad do
     |> Enum.map(&String.trim/1)
     |> extract_values
     |> Enum.map(&capitalize/1)
+  end
+
+  defp parse(document, :delivery) do
+    document
+    |> Floki.find("strong .col-sm-4 strong")
+    |> Enum.filter(fn {"strong", [], text} -> to_string(text) |> String.match?(~r/repartidor/) end)
+    |> Enum.map(fn {"strong", [], text} -> to_string(text) |> capitalize() end)
   end
 
   defp extract_values([title_and_city | [responsible | _]]) do
