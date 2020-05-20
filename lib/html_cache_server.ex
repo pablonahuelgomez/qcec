@@ -12,10 +12,6 @@ defmodule QCEC.HTMLCacheServer do
     GenServer.stop(server)
   end
 
-  def all(server \\ __MODULE__) do
-    GenServer.call(server, {:all})
-  end
-
   def lookup(category_name, server \\ __MODULE__) do
     GenServer.call(server, {:lookup, category_name})
   end
