@@ -30,5 +30,6 @@ defmodule QCEC.Categories do
     {:optics, 31}
   ]
 
-  def list, do: @categories
+  def list(:all), do: @categories
+  def list(:names), do: @categories |> Enum.map(fn {name, _} -> name end)
 end

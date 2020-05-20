@@ -10,7 +10,7 @@ defmodule QCEC.Parser do
   def parse_ads(htmls) do
     htmls
     |> Enum.map(fn {category_name, html} ->
-      Task.async(fn -> parse(:ads, html, category_name) end)
+      Task.async(fn -> %{"#{category_name}": parse(:ads, html, category_name)} end)
     end)
     |> Enum.flat_map(fn task -> Task.await(task, :infinity) end)
   end

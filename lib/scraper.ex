@@ -1,15 +1,15 @@
 defmodule QCEC.Scraper do
   @moduledoc false
 
-  def fetch_html_pages do
-    QCEC.Categories.list()
+  def fetch_documents do
+    QCEC.Categories.list(:all)
     |> Enum.map(fn {category_name, id} ->
-      Task.async(fn -> fetch_html_page(category_name, id) end)
+      Task.async(fn -> fetch_document(category_name, id) end)
     end)
     |> Enum.map(fn task -> Task.await(task, :infinity) end)
   end
 
-  defp fetch_html_page(category_name, id) do
+  defp fetch_document(category_name, id) do
     case id |> build_url |> :httpc.request() do
       {:ok, {{'HTTP/1.1', 200, 'OK'}, _, body}} -> {category_name, body}
       {:error, error} -> {:error, error}
