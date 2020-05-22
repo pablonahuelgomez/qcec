@@ -14,7 +14,7 @@ defmodule QCEC.AdServer do
   end
 
   def all(server \\ __MODULE__) do
-    GenServer.call(server, :get, :infinity)
+    GenServer.call(server, :all, :infinity)
   end
 
   def lookup(category_name, server \\ __MODULE__) do
