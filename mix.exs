@@ -26,7 +26,8 @@ defmodule QCEC.MixProject do
       # {:dep_from_git, git: "https://github.com/elixir-lang/my_dep.git", tag: "0.1.0"}
       {:floki, "~> 0.26.0"},
       {:fast_html, "~> 1.0"},
-      {:iconv, "~> 1.0.10"}
+      {:iconv, "~> 1.0.10"},
+      {:jason, "~> 1.2"}
     ]
   end
 end

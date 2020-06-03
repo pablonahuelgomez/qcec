@@ -2,6 +2,7 @@ defmodule QCEC.Ad do
   @moduledoc """
   Ad is a simple QCEC advertise structure.
   """
+  @derive Jason.Encoder
   defstruct image_url: nil,
             whatsapp: nil,
             title: nil,
