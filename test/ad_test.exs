@@ -24,8 +24,7 @@ defmodule QCECTest.Ad do
                  "https://www.facebook.com/cafesurBernal1998/",
                  "https://api.whatsapp.com/send?phone=+5491135809005&text=Consulta desde Comprar en Casa - Municipio de Quilmes"
                ],
-               category_name: :category,
-               delivery: ["Abel Oviedo (repartidor)", "Santiago Agustin Ledesma (repartidor)"]
+               category_name: :category
              }
   end
 
@@ -46,8 +45,7 @@ defmodule QCECTest.Ad do
                  "https://www.instagram.com/arriba_abajocafebar/",
                  "https://api.whatsapp.com/send?phone=+5491168037404&text=Consulta desde Comprar en Casa - Municipio de Quilmes"
                ],
-               category_name: :category,
-               delivery: ["Maria Jose Zaracho (repartidor)", "Solange Caceres (repartidor)"]
+               category_name: :category
              }
   end
 
@@ -65,8 +63,7 @@ defmodule QCECTest.Ad do
                  "https://maps.google.com/?q=-34.7238655,-58.3144188",
                  "https://api.whatsapp.com/send?phone=+5491166363702&text=Consulta desde Comprar en Casa - Municipio de Quilmes"
                ],
-               category_name: :category,
-               delivery: []
+               category_name: :category
              }
   end
 
@@ -86,11 +83,7 @@ defmodule QCECTest.Ad do
                  "https://www.instagram.com/orense.alfajores/",
                  "https://api.whatsapp.com/send?phone=+5491135665677&text=Consulta desde Comprar en Casa - Municipio de Quilmes"
                ],
-               category_name: :category,
-               delivery: [
-                 "Alejandro Alberto Estevez (repartidor)",
-                 "Alonso Jorge Martin (repartidor)"
-               ]
+               category_name: :category
              }
   end
 end
