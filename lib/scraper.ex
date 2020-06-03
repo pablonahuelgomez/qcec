@@ -11,8 +11,11 @@ defmodule QCEC.Scraper do
 
   defp fetch_document(category_name, id) do
     case id |> build_url |> :httpc.request() do
-      {:ok, {{'HTTP/1.1', 200, 'OK'}, _, body}} -> {category_name, body}
-      {:error, error} -> {:error, error}
+      {:ok, {{'HTTP/1.1', 200, 'OK'}, _, body}} ->
+        {category_name, :iconv.convert("utf-8", "iso8859-15", body)}
+
+      {:error, error} ->
+        {:error, error}
     end
   end
 

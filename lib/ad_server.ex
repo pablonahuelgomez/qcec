@@ -39,8 +39,10 @@ defmodule QCEC.AdServer do
 
   @impl true
   def handle_call(:all, _from, state) do
-    ads = QCEC.Categories.list(:names)
-    |> Enum.flat_map(fn category_name -> QCEC.AdCacheServer.lookup(category_name) end)
+    ads =
+      QCEC.Categories.list(:names)
+      |> Enum.flat_map(fn category_name -> QCEC.AdCacheServer.lookup(category_name) end)
+
     {:reply, ads, state}
   end
 
