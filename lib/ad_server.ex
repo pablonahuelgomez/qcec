@@ -3,6 +3,10 @@ defmodule QCEC.AdServer do
   """
   use GenServer
   require Logger
+  alias QCEC.AdCacheServer
+  alias QCEC.Categories
+  alias QCEC.HTMLCacheServer
+  alias QCEC.Parser
 
   # Client
   def start_link(opts) do
@@ -21,8 +25,8 @@ defmodule QCEC.AdServer do
     GenServer.call(server, {:lookup, category_name}, :infinity)
   end
 
-  def parse(server \\ __MODULE__) do
-    GenServer.cast(server, :parse)
+  def parse(category_name \\ :all, server \\ __MODULE__) do
+    GenServer.cast(server, {:parse, category_name})
   end
 
   # Server
@@ -33,25 +37,33 @@ defmodule QCEC.AdServer do
 
   @impl true
   def handle_call({:lookup, category_name}, _from, state) do
-    ads = QCEC.AdCacheServer.lookup(category_name)
-    {:reply, ads, state}
+    {:reply, AdCacheServer.lookup(category_name), state}
   end
 
   @impl true
   def handle_call(:all, _from, state) do
     ads =
-      QCEC.Categories.list(:names)
-      |> Enum.flat_map(fn category_name -> QCEC.AdCacheServer.lookup(category_name) end)
+      Categories.list(:names)
+      |> Enum.flat_map(&AdCacheServer.lookup(&1))
 
     {:reply, ads, state}
   end
 
   @impl true
-  def handle_cast(:parse, state) do
+  def handle_cast({:parse, :all}, state) do
     QCEC.Categories.list(:names)
-    |> Enum.map(fn category_name -> QCEC.HTMLCacheServer.lookup(category_name) end)
-    |> Enum.map(fn documents -> QCEC.Parser.parse_ads(documents) end)
-    |> Enum.map(fn ads -> QCEC.AdCacheServer.populate(ads) end)
+    |> Enum.map(
+      &(HTMLCacheServer.lookup(&1)
+        |> Parser.parse_ads(&1))
+    )
+
+    {:noreply, state}
+  end
+
+  @impl true
+  def handle_cast({:parse, category_name}, state) do
+    QCEC.HTMLCacheServer.lookup(category_name)
+    |> Parser.parse_ads(category_name)
 
     {:noreply, state}
   end

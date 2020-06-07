@@ -32,4 +32,6 @@ defmodule QCEC.Categories do
 
   def list(:all), do: @categories
   def list(:names), do: @categories |> Enum.map(fn {name, _} -> name end)
+
+  def id(category_name), do: Keyword.get(@categories, category_name)
 end

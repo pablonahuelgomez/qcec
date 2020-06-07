@@ -16,8 +16,8 @@ defmodule QCEC.AdCacheServer do
     GenServer.call(server, {:lookup, category_name})
   end
 
-  def populate(ads, server \\ __MODULE__) do
-    GenServer.cast(server, {:populate, ads})
+  def insert(ads, category_name, server \\ __MODULE__) do
+    GenServer.cast(server, {:insert, ads, category_name})
   end
 
   # Server
@@ -29,12 +29,12 @@ defmodule QCEC.AdCacheServer do
 
   @impl true
   def handle_call({:lookup, category_name}, _from, state) do
-    {:reply, :ets.lookup(:ads, category_name), state}
+    {:reply, :ets.lookup(:ads, category_name) |> Keyword.get(category_name), state}
   end
 
   @impl true
-  def handle_cast({:populate, ads}, _) do
-    :ets.insert(:ads, ads)
+  def handle_cast({:insert, ads, category_name}, _) do
+    :ets.insert(:ads, {category_name, ads})
     {:noreply, []}
   end
 end

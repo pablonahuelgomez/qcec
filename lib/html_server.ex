@@ -2,6 +2,7 @@ defmodule QCEC.HTMLServer do
   @moduledoc """
   """
   use GenServer
+  require Logger
 
   # Client
   def start_link(opts) do
@@ -24,7 +25,8 @@ defmodule QCEC.HTMLServer do
 
   @impl true
   def handle_cast(:fetch, _) do
-    QCEC.Scraper.fetch_documents() |> QCEC.HTMLCacheServer.populate()
+    QCEC.Categories.list(:names)
+    |> Enum.map(&QCEC.Scraper.fetch_document(&1))
 
     {:noreply, []}
   end

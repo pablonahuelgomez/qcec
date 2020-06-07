@@ -2,7 +2,7 @@ defmodule QCEC.Ad do
   @moduledoc """
   Ad is a simple QCEC advertise structure.
   """
-  @derive {Jason.Encoder, only: [:whatsapp]}
+  @derive Jason.Encoder
   defstruct image_url: nil,
             whatsapp: nil,
             title: nil,
@@ -18,9 +18,9 @@ defmodule QCEC.Ad do
     %QCEC.Ad{
       image_url: parse(document, :image_url),
       whatsapp: parse(document, :whatsapp),
-      title: title,
-      responsible: responsible,
-      city: city,
+      title: StringUtils.raw_binary_to_string(title),
+      responsible: StringUtils.raw_binary_to_string(responsible),
+      city: StringUtils.raw_binary_to_string(city),
       links: parse(document, :links),
       category_name: category_name
     }
@@ -52,7 +52,7 @@ defmodule QCEC.Ad do
     |> String.split("\n")
     |> Enum.map(&String.trim/1)
     |> extract_values
-    |> Enum.map(&capitalize/1)
+    |> Enum.map(&StringUtils.capitalize/1)
   end
 
   defp extract_values([title_and_city | [responsible | _]]) do
@@ -81,12 +81,5 @@ defmodule QCEC.Ad do
 
   defp format_city(city) do
     city |> String.replace(~r/- /, "")
-  end
-
-  defp capitalize(text) do
-    text
-    |> String.split()
-    |> Enum.map(&String.capitalize/1)
-    |> Enum.join(" ")
   end
 end

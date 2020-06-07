@@ -16,8 +16,8 @@ defmodule QCEC.HTMLCacheServer do
     GenServer.call(server, {:lookup, category_name})
   end
 
-  def populate(documents, server \\ __MODULE__) do
-    GenServer.cast(server, {:populate, documents})
+  def insert(category_name, document, server \\ __MODULE__) do
+    GenServer.cast(server, {:insert, category_name, document})
   end
 
   # Server
@@ -29,12 +29,12 @@ defmodule QCEC.HTMLCacheServer do
 
   @impl true
   def handle_call({:lookup, category_name}, _from, state) do
-    {:reply, :ets.lookup(:documents, category_name), state}
+    {:reply, :ets.lookup(:documents, category_name) |> Keyword.get(category_name), state}
   end
 
   @impl true
-  def handle_cast({:populate, documents}, _) do
-    :ets.insert(:documents, documents)
+  def handle_cast({:insert, category_name, document}, _) do
+    :ets.insert(:documents, {category_name, document})
     {:noreply, []}
   end
 end

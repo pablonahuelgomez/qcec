@@ -1,18 +1,27 @@
 defmodule QCEC.Scraper do
+  require Logger
   @moduledoc false
 
-  def fetch_documents do
-    QCEC.Categories.list(:all)
-    |> Enum.map(fn {category_name, id} ->
-      Task.async(fn -> fetch_document(category_name, id) end)
-    end)
-    |> Enum.map(fn task -> Task.await(task, :infinity) end)
+  def fetch_document(category_name) do
+    task =
+      Task.async(fn ->
+        case fetch(category_name) do
+          {:ok, category_name, document} ->
+            QCEC.HTMLCacheServer.insert(category_name, document)
+            Logger.info("#{category_name} inserted")
+
+          {:error, error} ->
+            {:error, error}
+        end
+      end)
+
+    Task.await(task, :infinity)
   end
 
-  defp fetch_document(category_name, id) do
-    case id |> build_url |> :httpc.request() do
+  defp fetch(category_name) do
+    case QCEC.Categories.id(category_name) |> build_url |> :httpc.request() do
       {:ok, {{'HTTP/1.1', 200, 'OK'}, _, body}} ->
-        {category_name, :iconv.convert("utf-8", "iso8859-15", body)}
+        {:ok, category_name, :iconv.convert("utf-8", "iso8859-1", body)}
 
       {:error, error} ->
         {:error, error}
