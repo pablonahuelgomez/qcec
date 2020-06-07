@@ -26,7 +26,7 @@ defmodule QCEC.HTMLServer do
   @impl true
   def handle_cast(:fetch, _) do
     QCEC.Categories.list(:names)
-    |> Enum.map(&QCEC.Scraper.fetch_document(&1))
+    |> Enum.map(&QCEC.Scraper.fetch_document/1)
     |> Enum.map(&Task.await/1)
 
     {:noreply, []}
