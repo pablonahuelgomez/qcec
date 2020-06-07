@@ -7,13 +7,10 @@ defmodule QCEC.Parser do
   alias QCEC.AdCacheServer
 
   def parse_ads(document, category_name) do
-    task =
-      Task.async(fn ->
-        parse(:ads, document, category_name) |> AdCacheServer.insert(category_name)
-        Logger.info("#{category_name} parsed")
-      end)
-
-    Task.await(task, :infinity)
+    Task.async(fn ->
+      parse(:ads, document, category_name) |> AdCacheServer.insert(category_name)
+      Logger.info("#{category_name} parsed")
+    end)
   end
 
   defp parse(:ads, document, category_name) do

@@ -3,19 +3,16 @@ defmodule QCEC.Scraper do
   @moduledoc false
 
   def fetch_document(category_name) do
-    task =
-      Task.async(fn ->
-        case fetch(category_name) do
-          {:ok, category_name, document} ->
-            QCEC.HTMLCacheServer.insert(category_name, document)
-            Logger.info("#{category_name} inserted")
+    Task.async(fn ->
+      case fetch(category_name) do
+        {:ok, category_name, document} ->
+          QCEC.HTMLCacheServer.insert(category_name, document)
+          Logger.info("#{category_name} inserted")
 
-          {:error, error} ->
-            {:error, error}
-        end
-      end)
-
-    Task.await(task, :infinity)
+        {:error, error} ->
+          {:error, error}
+      end
+    end)
   end
 
   defp fetch(category_name) do
