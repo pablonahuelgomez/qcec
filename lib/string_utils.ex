@@ -7,7 +7,11 @@ defmodule StringUtils do
   end
 
   def raw_binary_to_string(raw) do
-    raw |> String.codepoints() |> helper()
+    string = raw |> String.codepoints() |> helper()
+    case String.valid?(string) do
+      true  -> string
+      false -> ""
+    end
   end
 
   defp helper([]), do: ""
