@@ -44,7 +44,8 @@ defmodule QCEC.AdServer do
   def handle_call(:all, _from, state) do
     ads =
       Categories.list(:names)
-      |> Enum.flat_map(&AdCacheServer.lookup(&1))
+      |> Enum.map(&AdCacheServer.lookup(&1))
+      |> List.flatten()
 
     {:reply, ads, state}
   end
