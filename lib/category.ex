@@ -13,22 +13,7 @@ defmodule QCEC.Category do
     }
   end
 
-  defp parse(document, :name) do
-    document
-    |> Floki.find("h1[style=\"color:#ffffff\"]")
-    |> Floki.text()
-    |> String.trim()
-  end
-
-  defp parse(document, :image_url) do
-    document
-    |> Floki.find("img")
-    |> Floki.attribute("src")
-    |> Floki.text()
-    |> build_url()
-  end
-
-  defp build_url(path) do
-    "https://quilmes.gov.ar/servicios/#{path}"
+  defp parse(document, section) do
+    QCEC.CategoryParser.parse(document, section)
   end
 end
