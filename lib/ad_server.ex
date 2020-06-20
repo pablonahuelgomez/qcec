@@ -18,11 +18,17 @@ defmodule QCEC.AdServer do
   end
 
   def all(server \\ __MODULE__) do
-    GenServer.call(server, :all, :infinity)
+    case GenServer.call(server, :all, :infinity) do
+      [] -> {:error, "Ads not loaded"}
+      result -> {:ok, result}
+    end
   end
 
   def lookup(category_name, server \\ __MODULE__) do
-    GenServer.call(server, {:lookup, category_name}, :infinity)
+    case GenServer.call(server, {:lookup, category_name}, :infinity) do
+      [] -> {:error, "Ads not loaded"}
+      result -> {:ok, result}
+    end
   end
 
   def parse(category_name \\ :all, server \\ __MODULE__) do
