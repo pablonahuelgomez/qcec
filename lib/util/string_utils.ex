@@ -8,8 +8,9 @@ defmodule StringUtils do
 
   def raw_binary_to_string(raw) do
     string = raw |> String.codepoints() |> helper()
+
     case String.valid?(string) do
-      true  -> string
+      true -> string
       false -> ""
     end
   end
