@@ -6,10 +6,12 @@ defmodule QCEC.Parser do
   alias QCEC.Ad
   alias QCEC.AdCacheServer
 
-  def parse_ads(document, category_name) do
+  def parse_ads(document, category_name, subscribers \\ []) do
     Task.async(fn ->
       parse(:ads, document, category_name) |> AdCacheServer.insert(category_name)
-      Logger.info("#{category_name} parsed")
+      subscribers |> Enum.map(fn {from, s} ->
+        s.receive(category_name, from)
+      end)
     end)
   end
 

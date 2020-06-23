@@ -13,8 +13,8 @@ defmodule QCEC.HTMLServer do
     GenServer.stop(server)
   end
 
-  def fetch(server \\ __MODULE__) do
-    GenServer.cast(server, :fetch)
+  def fetch(subscribers \\ [], server \\ __MODULE__) do
+    GenServer.cast(server, {:fetch, subscribers})
   end
 
   # Server
@@ -24,9 +24,11 @@ defmodule QCEC.HTMLServer do
   end
 
   @impl true
-  def handle_cast(:fetch, _) do
+  def handle_cast({:fetch, subscribers}, _) do
     QCEC.Categories.list(:names)
-    |> Enum.map(&QCEC.Scraper.fetch_document/1)
+    |> Enum.map(fn category_name ->
+      QCEC.Scraper.fetch_document(category_name, subscribers)
+    end)
     |> Enum.map(&Task.await/1)
 
     {:noreply, []}

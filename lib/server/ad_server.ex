@@ -31,8 +31,8 @@ defmodule QCEC.AdServer do
     end
   end
 
-  def parse(category_name \\ :all, server \\ __MODULE__) do
-    GenServer.cast(server, {:parse, category_name})
+  def parse(category_name \\ :all, subscribers \\ [], server \\ __MODULE__) do
+    GenServer.cast(server, {:parse, category_name, subscribers})
   end
 
   # Server
@@ -57,11 +57,11 @@ defmodule QCEC.AdServer do
   end
 
   @impl true
-  def handle_cast({:parse, :all}, state) do
+  def handle_cast({:parse, :all, subscribers}, state) do
     QCEC.Categories.list(:names)
     |> Enum.map(
       &(HTMLCacheServer.lookup(&1)
-        |> Parser.parse_ads(&1))
+        |> Parser.parse_ads(&1, subscribers))
     )
     |> Enum.map(&Task.await/1)
 
@@ -69,9 +69,9 @@ defmodule QCEC.AdServer do
   end
 
   @impl true
-  def handle_cast({:parse, category_name}, state) do
+  def handle_cast({:parse, category_name, subscribers}, state) do
     QCEC.HTMLCacheServer.lookup(category_name)
-    |> Parser.parse_ads(category_name)
+    |> Parser.parse_ads(category_name, subscribers)
     |> Task.await()
 
     {:noreply, state}

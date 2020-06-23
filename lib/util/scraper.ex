@@ -2,12 +2,14 @@ defmodule QCEC.Scraper do
   require Logger
   @moduledoc false
 
-  def fetch_document(category_name) do
+  def fetch_document(category_name, subscribers \\ []) do
     Task.async(fn ->
       case fetch(category_name) do
         {:ok, category_name, document} ->
           QCEC.HTMLCacheServer.insert(category_name, document)
-          Logger.info("#{category_name} inserted")
+          subscribers |> Enum.each(fn {from, s} ->
+            s.receive(category_name, from)
+          end)
 
         {:error, error} ->
           {:error, error}
