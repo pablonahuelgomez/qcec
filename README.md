@@ -1,7 +1,7 @@
 ![Elixir CI](https://github.com/pablonahuelgomez/qcec/workflows/Elixir%20CI/badge.svg?branch=master)
 
 # QCEC
-QCEC is an OTP Application which scrapes different web pages concurrently retrieving awesome results.
+OTP application which collects information from https://quilmes.gov.ar/servicios/compra_en_casa.php
 
 ## Installation
 
@@ -15,8 +15,4 @@ def deps do
   ]
 end
 ```
-
-Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
-and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
-be found at [https://hexdocs.pm/qcec](https://hexdocs.pm/qcec).
 
