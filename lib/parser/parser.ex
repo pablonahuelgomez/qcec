@@ -2,16 +2,13 @@ defmodule QCEC.Parser do
   @moduledoc """
   Parses html_tree into QCEC structures.
   """
-  require Logger
   alias QCEC.Ad
   alias QCEC.AdCacheServer
 
-  def parse_ads(document, category_name, subscribers \\ []) do
+  def parse_ads(document, category_name) do
     Task.async(fn ->
-      parse(:ads, document, category_name) |> AdCacheServer.insert(category_name)
-      subscribers |> Enum.map(fn {from, s} ->
-        s.receive(category_name, from)
-      end)
+      parse(:ads, document, category_name)
+      |> AdCacheServer.insert(category_name)
     end)
   end
 
