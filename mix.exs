@@ -27,7 +27,8 @@ defmodule QCEC.MixProject do
       {:floki, "~> 0.26.0"},
       {:fast_html, "~> 1.0"},
       {:iconv, "~> 1.0.10"},
-      {:jason, "~> 1.2"}
+      {:jason, "~> 1.2"},
+      {:phoenix_pubsub, "~> 2.0.0"}
     ]
   end
 end

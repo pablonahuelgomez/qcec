@@ -9,6 +9,7 @@ defmodule QCEC.Parser do
     Task.async(fn ->
       parse(:ads, document, category_name)
       |> AdCacheServer.insert(category_name)
+      Phoenix.PubSub.broadcast(QCEC.PubSub, "ads", {:category_parsed, %{category: category_name}})
     end)
   end
 
