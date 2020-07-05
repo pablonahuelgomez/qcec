@@ -14,6 +14,9 @@ defmodule QCEC.Scraper do
             {:error, error} ->
               {:error, error}
           end
+
+        ads ->
+          ads
       end
 
       Phoenix.PubSub.broadcast(QCEC.PubSub, "ads", {:category_fetched, %{category: category}})

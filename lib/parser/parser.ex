@@ -11,6 +11,9 @@ defmodule QCEC.Parser do
         nil ->
           parse(:ads, document, category_name)
           |> Cache.insert(category_name)
+
+        ads ->
+          ads
       end
 
       Phoenix.PubSub.broadcast(QCEC.PubSub, "ads", {:category_parsed, %{category: category_name}})
