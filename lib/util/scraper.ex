@@ -1,17 +1,22 @@
 defmodule QCEC.Scraper do
   require Logger
   @moduledoc false
+  alias QCEC.HTMLCacheServer, as: Cache
 
   def fetch_document(category) do
     Task.async(fn ->
-      case fetch(category) do
-        {:ok, category, document} ->
-          QCEC.HTMLCacheServer.insert(category, document)
-          Phoenix.PubSub.broadcast(QCEC.PubSub, "ads", {:category_fetched, %{category: category}})
+      case Cache.lookup(category) do
+        nil ->
+          case fetch(category) do
+            {:ok, category, document} ->
+              Cache.insert(category, document)
 
-        {:error, error} ->
-          {:error, error}
+            {:error, error} ->
+              {:error, error}
+          end
       end
+
+      Phoenix.PubSub.broadcast(QCEC.PubSub, "ads", {:category_fetched, %{category: category}})
     end)
   end
 
