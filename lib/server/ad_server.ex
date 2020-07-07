@@ -59,21 +59,22 @@ defmodule QCEC.AdServer do
   @impl true
   def handle_cast({:parse, :all}, state) do
     Categories.list(:names)
-    |> Enum.map(fn category_name ->
-      HTMLCacheServer.lookup(category_name)
-      |> Parser.parse_ads(category_name)
-    end)
+    |> Enum.map(&parse_from/1)
     |> Enum.map(&Task.await/1)
 
     {:noreply, state}
   end
 
   @impl true
-  def handle_cast({:parse, category_name}, state) do
-    HTMLCacheServer.lookup(category_name)
-    |> Parser.parse_ads(category_name)
+  def handle_cast({:parse, category}, state) do
+    HTMLCacheServer.lookup(category)
+    |> Parser.parse_ads(category)
     |> Task.await()
 
     {:noreply, state}
+  end
+
+  defp parse_from(category) do
+    HTMLCacheServer.lookup(category) |> Parser.parse_ads(category)
   end
 end
