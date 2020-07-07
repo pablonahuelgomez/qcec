@@ -3,6 +3,8 @@ defmodule QCEC.AdParser do
     document
     |> Floki.find(".col-sm-6 a")
     |> Floki.attribute("href")
+    |> Enum.map(&StringUtils.raw_binary_to_string/1)
+    |> Enum.map(&(%{link: &1, type: define_link_type(&1)}))
   end
 
   def parse(document, :image_url) do
@@ -54,5 +56,17 @@ defmodule QCEC.AdParser do
 
   defp format_city(city) do
     city |> String.replace(~r/- /, "")
+  end
+
+  defp define_link_type(link) do
+    striped = link |> String.split(".")
+    types = ["instagram", "facebook", "google", "whatsapp", "pedidosya"]
+
+    case Enum.find(striped, "www", fn x ->
+      Enum.member?(types, x)
+    end) do
+      nil -> nil
+      type -> type
+    end
   end
 end

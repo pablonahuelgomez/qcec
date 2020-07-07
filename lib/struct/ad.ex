@@ -21,7 +21,7 @@ defmodule QCEC.Ad do
       title: StringUtils.raw_binary_to_string(title),
       responsible: StringUtils.raw_binary_to_string(responsible),
       city: StringUtils.raw_binary_to_string(city),
-      links: parse(document, :links) |> Enum.map(&StringUtils.raw_binary_to_string/1),
+      links: parse(document, :links),
       category_name: category_name
     }
   end
