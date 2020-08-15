@@ -14,6 +14,7 @@ defmodule QCECTest.Ad do
   test "from_document parses the ad 1 structure", %{document: document} do
     assert Ad.from_document(document, :category) ==
              %Ad{
+               address: "",
                image_url: "http://intranet.quilmes.gov.ar/cec/logos_comercios/cafesur.png",
                whatsapp: "1135809005",
                title: "Cafe Sur",
@@ -36,6 +37,7 @@ defmodule QCECTest.Ad do
   test "from_document parses the ad 2 structure", %{document: document} do
     assert Ad.from_document(document, :category) ==
              %Ad{
+               address: "Av. Mitre 603",
                image_url:
                  "http://intranet.quilmes.gov.ar/cec/logos_comercios/68037404_20200426153234.png",
                whatsapp: "1168037404",
@@ -71,6 +73,7 @@ defmodule QCECTest.Ad do
   test "from_document parses the ad 3 structure", %{document: document} do
     assert Ad.from_document(document, :category) ==
              %Ad{
+               address: "",
                image_url:
                  "http://intranet.quilmes.gov.ar/cec/logos_comercios/1166363702_20200422113800.png",
                whatsapp: "1166363702",
@@ -93,6 +96,7 @@ defmodule QCECTest.Ad do
   test "from_document parses the ad 4 structure", %{document: document} do
     assert Ad.from_document(document, :category) ==
              %Ad{
+               address: "Avellaneda 438",
                image_url:
                  "http://intranet.quilmes.gov.ar/cec/logos_comercios/35665677_20200417180527.png",
                whatsapp: "1135665677",

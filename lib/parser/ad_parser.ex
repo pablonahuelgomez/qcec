@@ -32,6 +32,22 @@ defmodule QCEC.AdParser do
     |> Enum.map(&StringUtils.capitalize/1)
   end
 
+  def parse(document, :address) do
+    selector = "a[style='border-radius:5px; background-color:#0431B4; color:#ffffff;'] strong "
+
+    case document |> Floki.find(selector) |> Enum.at(0) do
+      nil ->
+        ""
+
+      node ->
+        case node |> Floki.text() do
+          "FACEBOOK" -> ""
+          "MAPA" -> ""
+          address -> address |> StringUtils.raw_binary_to_string() |> StringUtils.capitalize()
+        end
+    end
+  end
+
   defp extract_values([title_and_city | [responsible | _]]) do
     case String.split(title_and_city, " - ") do
       [city] ->

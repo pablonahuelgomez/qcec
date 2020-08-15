@@ -9,7 +9,8 @@ defmodule QCEC.Ad do
             responsible: nil,
             city: nil,
             links: nil,
-            category_name: nil
+            category_name: nil,
+            address: nil
 
   @doc "Transform a html_tree into an ad."
   def from_document(document, category_name) do
@@ -22,7 +23,8 @@ defmodule QCEC.Ad do
       responsible: StringUtils.raw_binary_to_string(responsible),
       city: StringUtils.raw_binary_to_string(city),
       links: parse(document, :links),
-      category_name: category_name
+      category_name: category_name,
+      address: parse(document, :address)
     }
   end
 
