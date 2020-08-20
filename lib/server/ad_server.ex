@@ -68,13 +68,17 @@ defmodule QCEC.AdServer do
   @impl true
   def handle_cast({:parse, category}, state) do
     HTMLCacheServer.lookup(category)
-    |> Parser.parse_ads(category)
+    |> parse_ads(category)
     |> Task.await()
 
     {:noreply, state}
   end
 
   defp parse_from(category) do
-    HTMLCacheServer.lookup(category) |> Parser.parse_ads(category)
+    HTMLCacheServer.lookup(category) |> parse_ads(category)
+  end
+
+  defp parse_ads(html, category) do
+    Parser.parse_ads(html, category, fn category -> Logger.debug("#{category} parsed") end)
   end
 end
