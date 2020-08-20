@@ -1,7 +1,7 @@
 ![Elixir CI](https://github.com/pablonahuelgomez/qcec/workflows/Elixir%20CI/badge.svg?branch=master)
 
 # QCEC
-OTP application which collects information from https://quilmes.gov.ar/servicios/compra_en_casa.php
+QCEC is an OTP application which collects and retrieves information from [Quilmes Compra En Casa](https://quilmes.gov.ar/servicios/compra_en_casa.php)
 
 ## Installation
 
