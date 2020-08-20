@@ -13,6 +13,7 @@ defmodule QCEC.HTMLServer do
     GenServer.stop(server)
   end
 
+  # Async
   def fetch(server \\ __MODULE__) do
     GenServer.cast(server, {:fetch})
   end

@@ -12,10 +12,12 @@ defmodule QCEC.HTMLCacheServer do
     GenServer.stop(server)
   end
 
+  # Sync
   def lookup(category_name, server \\ __MODULE__) do
     GenServer.call(server, {:lookup, category_name})
   end
 
+  # Async
   def insert(category_name, document, server \\ __MODULE__) do
     GenServer.cast(server, {:insert, category_name, document})
   end
