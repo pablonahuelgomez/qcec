@@ -4,6 +4,8 @@ defmodule QCEC.HTMLServer do
   use GenServer
   require Logger
 
+  alias QCEC.Scraper
+
   # Client
   def start_link(opts) do
     GenServer.start_link(__MODULE__, :ok, opts)
@@ -27,14 +29,15 @@ defmodule QCEC.HTMLServer do
   @impl true
   def handle_cast({:fetch}, _) do
     QCEC.Categories.list(:names)
-    |> Enum.map(fn category_name ->
-      category_name
-      |> QCEC.Scraper.fetch_document(fn category ->
-        Logger.debug("#{category} html fetched")
-      end)
-    end)
-    |> Enum.map(&Task.await/1)
+    |> Enum.map(fn category -> fetch_category(category) end)
+    |> Enum.map(fn task -> Task.await(task, 25000) end)
 
     {:noreply, []}
+  end
+
+  defp fetch_category(category) do
+    scraper_callback = fn category -> Logger.debug("#{category} html fetched") end
+
+    Scraper.fetch_document(category, scraper_callback)
   end
 end
