@@ -27,7 +27,7 @@ iex> Ads.parse(:all)
 And that's it with scraping. QCEC stores the parsed and fetched information in ETS tables, making them accessible via this API:
 
 ```elixir
-iex> {:ok, ads} = AdServer.lookup :bakery
+iex> {:ok, ads} = Ads.lookup :bakery
 iex> hd(ads)
 %QCEC.Ad{
   address: "Example",
