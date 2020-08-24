@@ -10,24 +10,14 @@ qcec $ iex -S mix
 ```
 
 ```elixir
-iex> alias QCEC.HTMLServer, as: HTML
-iex> alias QCEC.AdServer, as: Ads
-
-# Wait for it, a logger will list fetched categories
-iex> HTML.fetch(:all)
-```
-
-QCEC also does web scraping over those documents like:
-
-```elixir
-# Wait for it, a logger will list parsed categories
-iex> Ads.parse(:all)
+# Wait for it, a logger will list fetched & parsed categories
+iex> :ok = QCEC.Server.load_ads
 ```
 
 And that's it with scraping. QCEC stores the parsed and fetched information in ETS tables, making them accessible via this API:
 
 ```elixir
-iex> {:ok, ads} = Ads.lookup :bakery
+iex> {:ok, ads} = QCEC.AdServer.lookup :bakery
 iex> hd(ads)
 %QCEC.Ad{
   address: "Example",

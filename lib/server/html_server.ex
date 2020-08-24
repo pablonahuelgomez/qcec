@@ -29,15 +29,10 @@ defmodule QCEC.HTMLServer do
   @impl true
   def handle_cast({:fetch}, _) do
     QCEC.Categories.list(:names)
-    |> Enum.map(fn category -> fetch_category(category) end)
+    |> Enum.map(fn category -> Task.async(fn -> Scraper.fetch_document(category) end) end)
     |> Enum.map(fn task -> Task.await(task, 25000) end)
 
     {:noreply, []}
   end
 
-  defp fetch_category(category) do
-    scraper_callback = fn category -> Logger.debug("#{category} html fetched") end
-
-    Scraper.fetch_document(category, scraper_callback)
-  end
 end

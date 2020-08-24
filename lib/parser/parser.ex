@@ -5,14 +5,12 @@ defmodule QCEC.Parser do
   alias QCEC.Ad
   alias QCEC.AdCacheServer, as: Cache
 
-  def parse_ads(document, category_name, callback) do
+  def parse_ads(document, category_name) do
     Task.async(fn ->
       case Cache.lookup(category_name) do
         nil ->
           parse(:ads, document, category_name)
           |> Cache.insert(category_name)
-
-          callback.(category_name)
 
         ads ->
           ads

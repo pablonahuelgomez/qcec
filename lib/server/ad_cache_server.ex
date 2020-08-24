@@ -31,7 +31,11 @@ defmodule QCEC.AdCacheServer do
 
   @impl true
   def handle_call({:lookup, category_name}, _from, state) do
-    {:reply, :ets.lookup(:ads, category_name) |> Keyword.get(category_name), state}
+    {
+      :reply,
+      :ets.lookup(:ads, category_name) |> Keyword.get(category_name),
+      state
+    }
   end
 
   @impl true

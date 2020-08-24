@@ -11,11 +11,13 @@ defmodule QCEC.Supervisor do
   @impl true
   def init(:ok) do
     children = [
+      {Phoenix.PubSub, name: QCEC.PubSub},
       {QCEC.HTMLCacheServer, name: QCEC.HTMLCacheServer},
       {QCEC.HTMLServer, name: QCEC.HTMLServer},
       {QCEC.AdCacheServer, name: QCEC.AdCacheServer},
       {QCEC.AdServer, name: QCEC.AdServer},
-      {Phoenix.PubSub, name: QCEC.PubSub}
+      {QCEC.CategoryServer, name: QCEC.CategoryServer},
+      {QCEC.Server, name: QCEC.Server}
     ]
 
     Supervisor.init(children, strategy: :one_for_one)
