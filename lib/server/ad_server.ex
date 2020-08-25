@@ -67,5 +67,4 @@ defmodule QCEC.AdServer do
 
     {:noreply, state}
   end
-
 end

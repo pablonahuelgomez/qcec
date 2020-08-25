@@ -51,9 +51,11 @@ defmodule QCEC.Categories do
   def list(:names), do: @categories |> Enum.map(fn {name, _, _} -> name end)
 
   def id(category_name) do
-    {_, id, _} = Enum.find(@categories, fn {name, _, _} ->
-      name == category_name
-    end)
+    {_, id, _} =
+      Enum.find(@categories, fn {name, _, _} ->
+        name == category_name
+      end)
+
     id
   end
 end

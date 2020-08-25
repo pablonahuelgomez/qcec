@@ -18,7 +18,7 @@ defmodule QCEC.CategoryServer do
 
   @impl true
   def handle_info({:category_fetched, %{category: category}}, state) do
-    Logger.debug("#{category} html fetched")
+    Logger.info("#{category} html fetched")
 
     QCEC.AdServer.parse(category)
 
@@ -27,9 +27,8 @@ defmodule QCEC.CategoryServer do
 
   @impl true
   def handle_info({:category_parsed, %{category: category}}, state) do
-    Logger.debug("#{category} html parsed")
+    Logger.info("#{category} html parsed")
 
     {:noreply, state}
   end
-
 end

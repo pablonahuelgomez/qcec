@@ -26,5 +26,4 @@ defmodule QCEC.Server do
 
     {:noreply, state}
   end
-
 end
