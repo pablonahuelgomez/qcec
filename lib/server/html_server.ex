@@ -29,10 +29,28 @@ defmodule QCEC.HTMLServer do
   @impl true
   def handle_cast({:fetch}, _) do
     QCEC.Categories.list(:names)
-    |> Enum.map(fn category -> Task.async(fn -> Scraper.fetch_document(category) end) end)
-    |> Enum.map(fn task -> Task.await(task, 25000) end)
+    |> Enum.map(fn category ->
+      Task.Supervisor.async_nolink(QCEC.TaskSupervisor, fn ->
+        :ok = Scraper.fetch_document(category)
+
+        category
+      end)
+    end)
 
     {:noreply, []}
   end
 
+  @impl true
+  def handle_info({ref, _category}, state) do
+    Process.demonitor(ref, [:flush])
+
+    {:noreply, state}
+  end
+
+  @impl true
+  def handle_info({:DOWN, _ref, :process, _pid, reason}, state) do
+    Logger.error(reason)
+
+    {:noreply, state}
+  end
 end

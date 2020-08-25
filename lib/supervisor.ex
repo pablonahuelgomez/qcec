@@ -17,7 +17,8 @@ defmodule QCEC.Supervisor do
       {QCEC.AdCacheServer, name: QCEC.AdCacheServer},
       {QCEC.AdServer, name: QCEC.AdServer},
       {QCEC.CategoryServer, name: QCEC.CategoryServer},
-      {QCEC.Server, name: QCEC.Server}
+      {QCEC.Server, name: QCEC.Server},
+      {Task.Supervisor, name: QCEC.TaskSupervisor}
     ]
 
     Supervisor.init(children, strategy: :one_for_one)
