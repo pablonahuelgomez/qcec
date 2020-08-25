@@ -41,8 +41,14 @@ defmodule QCEC.HTMLServer do
   end
 
   @impl true
-  def handle_info({ref, _category}, state) do
+  def handle_info({ref, category}, state) do
     Process.demonitor(ref, [:flush])
+
+    Phoenix.PubSub.broadcast(
+      QCEC.PubSub,
+      "ads",
+      {:category_fetched, %{category: category}}
+    )
 
     {:noreply, state}
   end

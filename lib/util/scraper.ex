@@ -10,12 +10,6 @@ defmodule QCEC.Scraper do
           {:ok, category, document} ->
             Cache.insert(category, document)
 
-            Phoenix.PubSub.broadcast(
-              QCEC.PubSub,
-              "ads",
-              {:category_fetched, %{category: category}}
-            )
-
           {:error, error} ->
             {:error, error}
         end
