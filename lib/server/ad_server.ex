@@ -61,9 +61,36 @@ defmodule QCEC.AdServer do
 
   @impl true
   def handle_cast({:parse, category}, state) do
-    HTMLCacheServer.lookup(category)
-    |> Parser.parse_ads(category)
-    |> Task.await()
+    case HTMLCacheServer.lookup(category) do
+      nil -> nil
+
+      html ->
+        Task.Supervisor.async_nolink(QCEC.TaskSupervisor, fn ->
+          :ok = Parser.parse_ads(html, category)
+
+          category
+        end)
+    end
+
+    {:noreply, state}
+  end
+
+  @impl true
+  def handle_info({ref, category}, state) do
+    Process.demonitor(ref, [:flush])
+
+    Phoenix.PubSub.broadcast(
+      QCEC.PubSub,
+      "ads",
+      {:category_parsed, %{category: category}}
+    )
+
+    {:noreply, state}
+  end
+
+  @impl true
+  def handle_info({:DOWN, _ref, :process, _pid, reason}, state) do
+    Logger.error(reason)
 
     {:noreply, state}
   end
