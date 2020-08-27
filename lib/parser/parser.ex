@@ -3,20 +3,8 @@ defmodule QCEC.Parser do
   Parses html_tree into QCEC structures.
   """
   alias QCEC.Ad
-  alias QCEC.AdCacheServer, as: Cache
 
   def parse_ads(document, category) do
-    case Cache.lookup(category) do
-      nil ->
-        parse(:ads, document, category)
-        |> Cache.insert(category)
-
-      ads ->
-        ads
-    end
-  end
-
-  defp parse(:ads, document, category) do
     case Floki.parse_document(document) do
       {:ok, document} -> extract_ads(document, category)
       {:error, error} -> {:error, error}

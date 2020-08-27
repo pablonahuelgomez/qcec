@@ -14,7 +14,10 @@ defmodule QCEC.AdCacheServer do
 
   # Sync
   def lookup(category_name, server \\ __MODULE__) do
-    GenServer.call(server, {:lookup, category_name})
+    case GenServer.call(server, {:lookup, category_name}) do
+      [] -> []
+      [{_, ads}] -> ads
+    end
   end
 
   # Async
@@ -33,7 +36,7 @@ defmodule QCEC.AdCacheServer do
   def handle_call({:lookup, category_name}, _from, state) do
     {
       :reply,
-      :ets.lookup(:ads, category_name) |> Keyword.get(category_name),
+      :ets.lookup(:ads, category_name),
       state
     }
   end

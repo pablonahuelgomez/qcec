@@ -16,7 +16,7 @@ defmodule QCEC.HTMLCacheServer do
   def lookup(category_name, server \\ __MODULE__) do
     case GenServer.call(server, {:lookup, category_name}) do
       [] -> []
-      [{_, ads}] -> ads
+      [{_, html}] -> html
     end
   end
 

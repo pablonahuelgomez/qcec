@@ -7,6 +7,7 @@ defmodule QCEC.AdServer do
   alias QCEC.Categories
   alias QCEC.HTMLCacheServer
   alias QCEC.Parser
+  alias QCEC.AdCacheServer, as: Cache
 
   # Client
   def start_link(opts) do
@@ -62,11 +63,18 @@ defmodule QCEC.AdServer do
   @impl true
   def handle_cast({:parse, category}, state) do
     case HTMLCacheServer.lookup(category) do
-      nil -> nil
+      [] -> []
 
       html ->
         Task.Supervisor.async_nolink(QCEC.TaskSupervisor, fn ->
-          :ok = Parser.parse_ads(html, category)
+          case Cache.lookup(category) do
+            [] ->
+              Parser.parse_ads(html, category)
+              |> Cache.insert(category)
+
+            ads ->
+              ads
+          end
 
           category
         end)
@@ -75,6 +83,7 @@ defmodule QCEC.AdServer do
     {:noreply, state}
   end
 
+  # Handles finished tasks started with Task.Supervisor.async_nolink
   @impl true
   def handle_info({ref, category}, state) do
     Process.demonitor(ref, [:flush])
