@@ -14,7 +14,10 @@ defmodule QCEC.HTMLCacheServer do
 
   # Sync
   def lookup(category_name, server \\ __MODULE__) do
-    GenServer.call(server, {:lookup, category_name})
+    case GenServer.call(server, {:lookup, category_name}) do
+      [] -> []
+      [{_, ads}] -> ads
+    end
   end
 
   # Async
@@ -31,7 +34,7 @@ defmodule QCEC.HTMLCacheServer do
 
   @impl true
   def handle_call({:lookup, category_name}, _from, state) do
-    {:reply, :ets.lookup(:documents, category_name) |> Keyword.get(category_name), state}
+    {:reply, :ets.lookup(:documents, category_name), state}
   end
 
   @impl true

@@ -1,25 +1,8 @@
 defmodule QCEC.Scraper do
   require Logger
   @moduledoc false
-  alias QCEC.HTMLCacheServer, as: Cache
 
   def fetch_document(category) do
-    case Cache.lookup(category) do
-      nil ->
-        case fetch(category) do
-          {:ok, category, document} ->
-            Cache.insert(category, document)
-
-          {:error, error} ->
-            {:error, error}
-        end
-
-      ads ->
-        ads
-    end
-  end
-
-  defp fetch(category) do
     case QCEC.Categories.id(category) |> build_url |> :httpc.request() do
       {:ok, {{'HTTP/1.1', 200, 'OK'}, _, body}} ->
         {:ok, category, :iconv.convert("utf-8", "iso8859-1", body)}

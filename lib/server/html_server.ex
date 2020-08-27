@@ -5,6 +5,7 @@ defmodule QCEC.HTMLServer do
   require Logger
 
   alias QCEC.Scraper
+  alias QCEC.HTMLCacheServer, as: Cache
 
   # Client
   def start_link(opts) do
@@ -31,7 +32,17 @@ defmodule QCEC.HTMLServer do
     QCEC.Categories.list(:names)
     |> Enum.map(fn category ->
       Task.Supervisor.async_nolink(QCEC.TaskSupervisor, fn ->
-        :ok = Scraper.fetch_document(category)
+        case Cache.lookup(category) do
+          [] ->
+            case Scraper.fetch_document(category) do
+              {:ok, category, document} ->
+                :ok = Cache.insert(category, document)
+
+              {:error, error} ->
+                {:error, error}
+            end
+          ads -> ads
+        end
 
         category
       end)
